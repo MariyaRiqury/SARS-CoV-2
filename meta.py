@@ -51,7 +51,7 @@ def all_names(input_fName,output_fName, point):
                     # out_f1.write('\t'.join(selected_columns) + '\n')  # Записываем в выходной файл
                     # print(columns[4], columns[5], columns[13])
                     print('\t'.join(selected_columns))
-                    # out_f1.write('\t'.join(selected_columns) + '\n')
+                    out_f1.write('\t'.join(selected_columns) + '\n')
 
                     # Str = columns[0]
                     # name = Str.split("/")
@@ -59,7 +59,6 @@ def all_names(input_fName,output_fName, point):
                     # out_f.write(name[2] + '\n')
 
             line = f.readline()
-            print(i)
     print("первая часть все")
 
 def main():
@@ -72,40 +71,40 @@ def main():
     all_names(input_fName, output_fName, point) #собирает файл с названием панголинии индификационным номером и названием
 
 
-    # # input_file_path = f'./metadata_count/output__metadata_keys_{point}_for_data.txt'
-    # output_file_path = f'./metadata_count/count_result_{point}.csv'
-    # output_file_path_100 = f'./metadata_count/count_result_{point}_more_100.csv'
-    # count_words_in_file(output_fName, output_file_path, output_file_path_100) #считает сколько образцов для каждой панголинии
-    #
-    # # print(f"Подсчет слов завершен. Результаты сохранены в '{output_file_path}'.")
-    #
-    # d_count = pd.read_table(output_file_path_100, sep=';', header=None, low_memory=False,
-    #                        na_values=['NA'])
-    # d_count.columns = ['Pango lineage', 'count']
-    # print(d_count)
-    # # files = os.listdir(folder_for_names)
-    # # print(files)
-    # data = pd.read_table(output_fName, sep='\t', header=None, low_memory=False,
-    #                        na_values=['NA'])
-    # data.columns = ['Pango lineage', 'Accession ID', 'Virus name']
-    # folder_for_names = f'./for_all_more_100_seq_1000_max_{point}'
-    # for index, row in d_count.iterrows():
-    #     key = row['Pango lineage']
-    #     count = row['count']
-    #     result_df = pd.DataFrame()
-    #     filtered_data = data[data['Pango lineage'] == key]
-    #     filtered_data1 = filtered_data['Virus name'].drop_duplicates()
-    #     print(f'количество отфильтрованных {filtered_data1.shape[0]}')
-    #     if not filtered_data.empty:
-    #         if count > 1000:
-    #             random_samples = filtered_data1.sample(n=1000)
-    #             result_df = pd.concat([result_df, random_samples], ignore_index=True)
-    #         else:
-    #             result_df = pd.concat([result_df, filtered_data1], ignore_index=True)
-    #         file_name_result = f"{key}.txt"
-    #         output_file_path = os.path.join(folder_for_names, file_name_result)
-    #         result_df.to_csv(output_file_path, index=False, header=False)
-    #         print("создан файл " + key)
+    # input_file_path = f'./metadata_count/output__metadata_keys_{point}_for_data.txt'
+    output_file_path = f'./metadata_count/count_result_{point}.csv'
+    output_file_path_100 = f'./metadata_count/count_result_{point}_more_100.csv'
+    count_words_in_file(output_fName, output_file_path, output_file_path_100) #считает сколько образцов для каждой панголинии
+
+    # print(f"Подсчет слов завершен. Результаты сохранены в '{output_file_path}'.")
+
+    d_count = pd.read_table(output_file_path_100, sep=';', header=None, low_memory=False,
+                           na_values=['NA'])
+    d_count.columns = ['Pango lineage', 'count']
+    print(d_count)
+    # files = os.listdir(folder_for_names)
+    # print(files)
+    data = pd.read_table(output_fName, sep='\t', header=None, low_memory=False,
+                           na_values=['NA'])
+    data.columns = ['Pango lineage', 'Accession ID', 'Virus name']
+    folder_for_names = f'./for_all_more_100_seq_1000_max_{point}'
+    for index, row in d_count.iterrows():
+        key = row['Pango lineage']
+        count = row['count']
+        result_df = pd.DataFrame()
+        filtered_data = data[data['Pango lineage'] == key]
+        filtered_data1 = filtered_data['Virus name'].drop_duplicates()
+        print(f'количество отфильтрованных {filtered_data1.shape[0]}')
+        if not filtered_data.empty:
+            if count > 1000:
+                random_samples = filtered_data1.sample(n=1000)
+                result_df = pd.concat([result_df, random_samples], ignore_index=True)
+            else:
+                result_df = pd.concat([result_df, filtered_data1], ignore_index=True)
+            file_name_result = f"{key}.txt"
+            output_file_path = os.path.join(folder_for_names, file_name_result)
+            result_df.to_csv(output_file_path, index=False, header=False)
+            print("создан файл " + key)
         # file_name = f"{folder_for_names}/file{key}.txt"
 #сохраняет 100 рандомных названий образцов отдельными файлами для каждой панголинии
 if __name__ == "__main__":
